@@ -6,13 +6,66 @@ html {
 
 body {
   font-family: Montserrat, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 0;
   min-height: 100vh;
   background-color: #fefbf3;
   background-image: url("data:image/svg+xml,%3Csvg width='24' height='40' viewBox='0 0 24 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 40c5.523 0 10-4.477 10-10V0C4.477 0 0 4.477 0 10v30zm22 0c-5.523 0-10-4.477-10-10V0c5.523 0 10 4.477 10 10v30z' fill='%236d9886' fill-opacity='0.54' fill-rule='evenodd'/%3E%3C/svg%3E");
   color: black;
   font-weight: 700;
+}
+
+.quote-container {
+  width: auto;
+  max-width: 900px;
+  padding: 20px 30px;
+  border-radius: 10px;
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 10px 10px 10px rgba(0, 0, 0, 0.4);
+
+}
+
+.quote-text {
+  font-size: 2.75rem;
+
+}
+
+.long-quote {
+  font-size: 2rem;
+
+}
+
+.fa-quote-left {
+  font-size: 4rem;
+}
+
+.quote-author {
+  margin-top: 15px;
+  font-size: 2rem;
+  font-weight: 400;
+  font-style: italic;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Media Query: tablet or Smaller */
+
+
+@media screen and (max-width: 1000px) {
+  .quote-container {
+    margin: auto 10px;
+  }
+
+  .quote-text {
+    font-size: 2.5rem;
+  }
 }
