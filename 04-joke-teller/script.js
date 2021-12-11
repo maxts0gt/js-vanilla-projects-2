@@ -1,19 +1,26 @@
 const button = document.getElementById('button');
 const audioElement = document.getElementById('audio');
+
 // Script starts here
 apiKey = '37a130aee41e440ea52a074a30546ef0';
 
-// function test() {
-// 	VoiceRSS.speech({
-// 		key: apiKey,
-// 		src: 'Hello, world!',
-// 		hl: 'en-us',
-// 		r: 0,
-// 		c: 'mp3',
-// 		f: '44khz_16bit_stereo',
-// 		ssml: false,
-// 	});
-// }
+// Disable Enable Button click
+function toggleButton() {
+	button.disabled = !button.disabled;
+}
+
+// Passing Joke to VoiceRSS API
+function tellMe(joke) {
+	VoiceRSS.speech({
+		key: apiKey,
+		src: joke,
+		hl: 'en-us',
+		r: 0,
+		c: 'mp3',
+		f: '44khz_16bit_stereo',
+		ssml: false,
+	});
+}
 
 // Get Jokes from Joke API
 async function getJokes() {
@@ -23,16 +30,16 @@ async function getJokes() {
 		const response = await fetch(apiUrl);
 		const data = await response.json();
 		if (data.setup) {
-			joke = `${(data, setuo)} ... ${data.delivery}`;
+			joke = `${(data, setup)} ... ${data.delivery}`;
 		} else {
 			joke = data.joke;
 		}
-		console.log(data.joke);
+		tellMe(joke);
 	} catch (error) {
 		console.log('fetch failed', error);
 	}
 }
 
-// On load
-// test();
-getJokes();
+// Add event listeners
+button.addEventListener('click', getJokes);
+audioElement.addEventListener('ended', toggleButton);
