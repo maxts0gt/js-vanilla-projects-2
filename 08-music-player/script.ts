@@ -7,6 +7,8 @@ const prevBtn = document.getElementById('prev');
 const playBtn = document.getElementById('play');
 const progressContainer = document.getElementById('progressContainer');
 const progress = document.getElementById('progress');
+const currentTimeEl = document.getElementById('current-time');
+const durationEl = document.getElementById('duration');
 
 // Object Type
 interface Song {
@@ -88,11 +90,28 @@ function nextSong() {
 }
 
 function updateProgressBar(e: any) {
-	console.log(e);
 	if (isPlaying) {
 		const { duration, currentTime } = e.srcElement;
+		// Update progress bar with
 		const progressPercent = (currentTime / duration) * 100;
 		progress.style.width = `${progressPercent}%`;
+		// Calculate display for total duration
+		const durationMinutes = Math.floor(duration / 60);
+		let durationSeconds: string | number = Math.floor(duration % 60);
+		if (durationSeconds < 10) {
+			durationSeconds = `0${durationSeconds}`;
+		}
+		// Avoid NaN
+		if (durationSeconds) {
+			durationEl.textContent = `${durationMinutes}:${durationSeconds}`;
+		}
+		// Calculate display for current duration
+		const currentMinutes = Math.floor(currentTime / 60);
+		let currentSeconds: string | number = Math.floor(currentTime % 60);
+		if (currentSeconds < 10) {
+			currentSeconds = `0${currentSeconds}`;
+		}
+		currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
 	}
 }
 
