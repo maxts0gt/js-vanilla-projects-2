@@ -5,6 +5,8 @@ const music = document.querySelector('audio');
 const nextBtn = document.getElementById('next');
 const prevBtn = document.getElementById('prev');
 const playBtn = document.getElementById('play');
+const progressContainer = document.getElementById('progressContainer');
+const progress = document.getElementById('progress');
 
 // Object Type
 interface Song {
@@ -85,6 +87,15 @@ function nextSong() {
 	playSong();
 }
 
+function updateProgressBar(e: any) {
+	console.log(e);
+	if (isPlaying) {
+		const { duration, currentTime } = e.srcElement;
+		const progressPercent = (currentTime / duration) * 100;
+		progress.style.width = `${progressPercent}%`;
+	}
+}
+
 // On Load - Select First Song
 loadSong(songs[songIndex]);
 
@@ -92,3 +103,4 @@ loadSong(songs[songIndex]);
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 playBtn.addEventListener('click', () => (isPlaying ? pauseSong() : playSong()));
+music.addEventListener('timeupdate', updateProgressBar);
