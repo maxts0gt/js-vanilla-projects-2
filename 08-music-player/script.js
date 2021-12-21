@@ -6,7 +6,7 @@ const music = document.querySelector('audio');
 const nextBtn = document.getElementById('next');
 const prevBtn = document.getElementById('prev');
 const playBtn = document.getElementById('play');
-const progressContainer = document.getElementById('progressContainer');
+const progressContainer = document.getElementById('progress-container');
 const progress = document.getElementById('progress');
 const currentTimeEl = document.getElementById('current-time');
 const durationEl = document.getElementById('duration');
@@ -99,6 +99,12 @@ function updateProgressBar(e) {
         currentTimeEl.textContent = `${currentMinutes}:${currentSeconds}`;
     }
 }
+function setProgressBar(e) {
+    const width = this.clientWidth;
+    const clickX = e.offsetX;
+    const { duration } = music;
+    music.currentTime = (clickX / width) * duration;
+}
 // On Load - Select First Song
 loadSong(songs[songIndex]);
 // Event Listeners
@@ -106,3 +112,4 @@ prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
 playBtn.addEventListener('click', () => (isPlaying ? pauseSong() : playSong()));
 music.addEventListener('timeupdate', updateProgressBar);
+progressContainer.addEventListener('click', setProgressBar);
