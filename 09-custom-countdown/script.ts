@@ -6,6 +6,10 @@ const countdownElTitle = document.getElementById('countdown-title');
 const countdownBtn = document.getElementById('countdown-button');
 const timeElements = document.querySelectorAll('span');
 
+const completeEl = document.getElementById('complete');
+const completeElInfo = document.getElementById('complete-info');
+const completeBtn = document.getElementById('complete-button');
+
 let countDownTitle = '';
 let countDownDate = '';
 let countdownValue: number;
@@ -32,20 +36,25 @@ function updateDOM() {
 		const minutes = Math.floor((distance % hour) / minute);
 		const seconds = Math.floor((distance % minute) / second);
 
-		console.log(days);
-
-		// Populate Countdown
-
-		countdownElTitle.textContent = `${countDownTitle}`;
-		timeElements[0].textContent = `${days}`;
-		timeElements[1].textContent = `${hours}`;
-		timeElements[2].textContent = `${minutes}`;
-		timeElements[3].textContent = `${seconds}`;
-
-		// Hide Input
+		console.log(days); // Hide Input
 		inputContainer.hidden = true;
-		// Show Countdown
-		countdownEl.hidden = false;
+
+		// If count down has ended, show complete
+		if (distance < 0) {
+			countdownEl.hidden = true;
+			clearInterval(countdownActive);
+			completeElInfo.textContent = `${countDownTitle} finished on ${countDownDate}`;
+			completeEl.hidden = false;
+		} else {
+			// Show the progress
+			countdownElTitle.textContent = `${countDownTitle}`;
+			timeElements[0].textContent = `${days}`;
+			timeElements[1].textContent = `${hours}`;
+			timeElements[2].textContent = `${minutes}`;
+			timeElements[3].textContent = `${seconds}`;
+			completeEl.hidden = true;
+			countdownEl.hidden = false;
+		}
 	}, second);
 }
 
