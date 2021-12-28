@@ -10,8 +10,6 @@ let bookmarks = [];
 
 // Show Modal, focus on input
 
-console.log(modalShow);
-
 function showModal() {
 	modal.classList.add('show-modal');
 	websiteNameEl.focus();
@@ -38,7 +36,7 @@ function validate(nameValue, urlValue) {
 	}
 
 	if (urlValue.match(regex)) {
-		alert('match');
+		// alert('match');
 	}
 	if (!urlValue.match(regex)) {
 		alert('Please provide a valid web address');
@@ -47,7 +45,7 @@ function validate(nameValue, urlValue) {
 	return true;
 }
 
-// Handledata from Bookmark
+// Handle data from Bookmark
 function storeBookmark(e) {
 	e.preventDefault();
 	const nameValue = websiteNameEl.value;
@@ -58,7 +56,87 @@ function storeBookmark(e) {
 	if (!validate(nameValue, urlValue)) {
 		return false;
 	}
+
+	const bookmark = {
+		name: nameValue,
+		url: urlValue,
+	};
+
+	bookmarks.push(bookmark);
+	localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+	fetchBookmarks();
+	bookmarkForm.reset();
+	websiteNameEl.focus();
+}
+
+// Build Bookmarks DOM
+function buildBookmarks() {
+	// Remove all bookmark elements
+	bookmarksContainer.textContent = '';
+
+	bookmarks.forEach((bookmark) => {
+		const { name, url } = bookmark;
+		const item = document.createElement('div');
+		item.classList.add('item');
+		// Close icon
+		const closeIcon = document.createElement('i');
+		closeIcon.classList.add('fas', 'fa-times');
+		closeIcon.setAttribute('onClick', `deleteBookmark('${url}')`);
+		// Favicon and link container
+		const linkInfo = document.createElement('div');
+		linkInfo.classList.add('name');
+		// Favicon
+		const favicon = document.createElement('img');
+		favicon.setAttribute(
+			'src',
+			`https://s2.googleusercontent.com/s2/favicons?domain=${url}`
+		);
+		favicon.setAttribute('alt', 'Favicon');
+		//
+		const link = document.createElement('a');
+		link.setAttribute('href', `${url}`);
+		link.setAttribute('target', `_blank`);
+		link.textContent = name;
+		// Append to bookmarks container
+		linkInfo.append(favicon, link);
+		item.append(closeIcon, linkInfo);
+		bookmarksContainer.appendChild(item);
+	});
+}
+
+// Delete Bookmark
+function deleteBookmark(url) {
+	bookmarks.forEach((bookmark, i) => {
+		if (bookmark.url === url) {
+			bookmarks.splice(i, 1);
+		}
+	});
+
+	// update bookmarks in localStorage & repopulate DOM
+	localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+	fetchBookmarks();
+}
+
+// Fetch bookmarks
+function fetchBookmarks() {
+	// Get bookmarks from localstorage if available
+	if (localStorage.getItem('bookmarks')) {
+		bookmarks = JSON.parse(localStorage.getItem('bookmarks'));
+	} else {
+		// Create bookmarks array in localStorage
+		bookmarks = [
+			{
+				name: 'Max Tsogt',
+				url: 'https://maxtsogt.com',
+			},
+		];
+		localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+	}
+	buildBookmarks();
 }
 
 // Event Listener
 bookmarkForm.addEventListener('submit', storeBookmark);
+
+// On load
+fetchBookmarks();
