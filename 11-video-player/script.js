@@ -102,7 +102,13 @@ function changeVolume(e) {
 }
 // Change Playback Speed -------------------- //
 
+function changeSpeed() {
+	video.playbackRate = speed.value;
+}
+
 // Fullscreen ------------------------------- //
+
+// Event Listeners
 playBtn.addEventListener('click', togglePlay);
 video.addEventListener('click', togglePlay);
 video.addEventListener('timeupdate', updateProgress);
@@ -110,3 +116,4 @@ video.addEventListener('canplay', updateProgress);
 progressRange.addEventListener('click', setProgress);
 volumeRange.addEventListener('click', changeVolume);
 volumeIcon.addEventListener('click', toggleMute);
+speed.addEventListener('change', changeSpeed);
